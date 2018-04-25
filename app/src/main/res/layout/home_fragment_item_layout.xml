@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/name_home_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Sample text"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:paddingTop="10dp"/>
+
+    <TextView
+        android:id="@+id/desc_home_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:paddingTop="10dp"
+        tools:text="this is the description of the post applied to the post."/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:textSize="20sp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Urgency : "
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/urgency_home_fragment"
+            android:layout_width="wrap_content"
+            android:paddingLeft="20dp"
+            android:layout_height="wrap_content"
+            tools:text="sampletext"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:textSize="20sp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contact at : "
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/contact_home_fragment"
+            android:layout_width="wrap_content"
+            android:paddingLeft="20dp"
+            android:layout_height="wrap_content"
+            tools:text="sampletext"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:textSize="20sp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Additional Instructions : "
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/additional_home_fragment"
+            android:layout_width="wrap_content"
+            android:paddingLeft="20dp"
+            android:layout_height="wrap_content"
+            tools:text="sampletext"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:textSize="20sp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Voluntters Uptil Now : "
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/volunteers_home_fragment"
+            android:layout_width="wrap_content"
+            android:paddingLeft="20dp"
+            android:layout_height="wrap_content"
+            tools:text="5"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:textSize="20sp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Current requirement : "
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/volunteers_requirements_home_fragment"
+            android:layout_width="wrap_content"
+            android:paddingLeft="20dp"
+            android:layout_height="wrap_content"
+            tools:text="2"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

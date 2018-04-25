@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">24AprilFinalProject</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <array name="spinner_items">
+        <item>A positive</item>
+        <item>B positive</item>
+        <item>O positive</item>
+        <item>A Negative</item>
+        <item>B Negative</item>
+        <item>O Negative</item>
+    </array>
+
+    <array name="hospital_spinner_add_post">
+        <item>Indus Hospital</item>
+        <item>ZiaUddin Hospital</item>
+        <item>Aga Khan Hospital</item>
+        <item>Liaqat National Hospital</item>
+        <item>OMI</item>
+        <item>Jinnah Hospital</item>
+        <item>Holy Family Hospital</item>
+    </array>
+
+    <array name="urgency_spinner_add_post">
+        <item>urgent</item>
+        <item>Within 5 Hours</item>
+        <item>Within 12 Hours</item>
+        <item>Within 24 Hours</item>
+        <item>Within 2 days</item>
+        <item>Within Week</item>
+    </array>
+
+    <array name="relation_spinner_add_post">
+        <item>Father</item>
+        <item>Mother</item>
+        <item>Son</item>
+        <item>Daughter</item>
+        <item>Aunt</item>
+        <item>Uncle</item>
+        <item>Nephew</item>
+        <item>Niece</item>
+        <item>Friend</item>
+        <item>Wife</item>
+        <item>None</item>
+
+    </array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
