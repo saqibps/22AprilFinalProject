@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.Home -> {
+            R.id.home -> {
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.frame_layout,HomeFragment())
                         .commit()

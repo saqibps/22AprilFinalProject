@@ -31,6 +31,7 @@ class PostDetail : Fragment() {
              Toast.makeText(context,"${bundle.getString("key")}",Toast.LENGTH_SHORT).show()
         }
 
+
         return view
     }
 
