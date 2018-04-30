@@ -12,8 +12,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -25,6 +27,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         auth = FirebaseAuth.getInstance()
+        val uid:String = auth.currentUser!!.uid
+        val databaseRef:DatabaseReference = FirebaseDatabase.getInstance().reference.child("users").child(uid)
+        databaseRef.addValueEventListener(object :ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {}
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+            val user:User = snapshot.getValue(User::class.java)!!
+                val fullName = "${user.firstName} ${user.lastName}"
+                val bloodGroup = user.bloodGroup
+                nav_header_name_tv.text = fullName
+                nav_header_bloodgroup_tv.text = bloodGroup
+            }
+
+        })
 
         supportFragmentManager.beginTransaction()
                 .replace(R.id.frame_layout,HomeFragment())
@@ -78,7 +94,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.my_request -> {
 
             }
-            R.id.pos_requirements -> {
+            R.id.post_requirements -> {
 
             }
             R.id.notifications -> {

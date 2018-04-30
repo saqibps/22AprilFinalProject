@@ -28,7 +28,7 @@ class AddPostActivity : AppCompatActivity() {
                 user = snapshot.getValue(User::class.java)!!
             }
         })
-        postdatabaseReference = FirebaseDatabase.getInstance().reference.child("posts").child(uid)
+        postdatabaseReference = FirebaseDatabase.getInstance().reference.child("posts")
 
         add_bt_add_post.setOnClickListener {
 
@@ -47,12 +47,16 @@ class AddPostActivity : AppCompatActivity() {
                 val relation: String = relation_spinner_add_post.selectedItem.toString()
                 val contact: String = contact_add_new_et.text.toString().trim()
                 val additionInstruction: String = additional_instruction_add_new_et.text.toString()
+                val userName = "${user.firstName} ${user.lastName}"
+                val location = "$city,$state,$country"
 
-
+                val key:String = postdatabaseReference.push().key
+                val post = Post(key,uid,userName,unitsReq,0,bloodGroup,urgency,contact,additionInstruction,
+                        0,location,hospital,relation,null,null)
+                postdatabaseReference.child(key).setValue(post)
+                finish()
             }
 
         }
-
-
     }
 }
