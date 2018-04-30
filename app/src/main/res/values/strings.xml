@@ -51,6 +51,37 @@
 
     </array>
 
+    <array name="country_spinner_add_post">
+        <item>Pakistan</item>
+    </array>
+
+    <array name="state_spinner_add_post">
+        <item>SINDH</item>
+        <item>PUNJAB</item>
+        <item>KPK</item>
+        <item>BALOCHISTAN</item>
+        <item>GILGIT BALTISTAN</item>
+    </array>
+
+    <array name="city_spinner_add_post">
+        <item>Karachi</item>
+        <item>Lahore</item>
+        <item>Islamabad</item>
+        <item>Peshawar</item>
+        <item>Quetta</item>
+        <item>Faisalabad</item>
+        <item>Multan</item>
+        <item>Larkana</item>
+        <item>Hyderabad</item>
+        <item>Chakwal</item>
+        <item>Swat</item>
+        <item>Skardu</item>
+        <item>Moro</item>
+        <item>Saqidabad</item>
+
+
+    </array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

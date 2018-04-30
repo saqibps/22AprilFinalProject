@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.database.*
+import java.util.ArrayList
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -21,13 +22,15 @@ private const val ARG_PARAM2 = "param2"
 class HomeFragment : Fragment() {
 
     lateinit var databaseReference: DatabaseReference
+    lateinit var postList:ArrayList<Post>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        val view:View = inflater.inflate(R.layout.fragment_home, container, false)
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("posts")
+        postList = arrayListOf()
 
         databaseReference.addChildEventListener(object : ChildEventListener{
             override fun onCancelled(p0: DatabaseError?) {}
@@ -41,5 +44,6 @@ class HomeFragment : Fragment() {
             override fun onChildRemoved(p0: DataSnapshot?) {}
         })
 
+        return view
     }
 }

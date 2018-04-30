@@ -37,7 +37,7 @@ class SignInActivity : AppCompatActivity() {
             val emailString = email_et.text.toString().trim()
             val passwordString = password_et.text.toString().trim()
             if (emailString.isEmpty() || passwordString.isEmpty()) {
-                Toast.makeText(this, "PLease provide Email and Password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please provide Email and Password", Toast.LENGTH_SHORT).show()
 
             } else
                 signIn(emailString,passwordString)

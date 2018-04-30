@@ -47,7 +47,7 @@
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:text="Sign_Up"
-        android:paddingTop="20dp"
+        android:layout_marginTop="15dp"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

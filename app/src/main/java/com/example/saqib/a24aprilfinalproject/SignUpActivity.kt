@@ -48,9 +48,9 @@ class SignUpActivity : AppCompatActivity() {
                     progressDialog.dismiss()
                     if (task.isSuccessful){
                         Toast.makeText(this, "Signed Up!", Toast.LENGTH_SHORT).show()
-                        val key:String = databaseReference.push().key
-                        val user:User = User(firstName,lastName,email,bloodGroup)
-                        databaseReference.child(key).setValue(user)
+                        val uid:String = auth.currentUser!!.uid
+                        val user:User = User(uid,firstName,lastName,email,bloodGroup)
+                        databaseReference.child(uid).setValue(user)
 
                         gotoApp()
                     } else {

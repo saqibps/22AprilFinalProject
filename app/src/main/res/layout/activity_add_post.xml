@@ -29,7 +29,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/blood_group_spinner_add_post"
             android:entries="@array/spinner_items">
-
         </android.support.v7.widget.AppCompatSpinner>
     </LinearLayout>
 
@@ -87,11 +86,13 @@
             android:text="Country"
             android:textSize="20sp"/>
 
-        <EditText
-            android:id="@+id/country_add_new_et"
+        <android.support.v7.widget.AppCompatSpinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAllCaps="false"/>
+            android:id="@+id/country_spinner_add_post"
+            android:entries="@array/country_spinner_add_post">
+
+        </android.support.v7.widget.AppCompatSpinner>
 
     </LinearLayout>
 
@@ -106,11 +107,13 @@
             android:text="State"
             android:textSize="20sp"/>
 
-        <EditText
-            android:id="@+id/state_add_new_et"
+        <android.support.v7.widget.AppCompatSpinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAllCaps="false"/>
+            android:id="@+id/state_spinner_add_post"
+            android:entries="@array/state_spinner_add_post">
+
+        </android.support.v7.widget.AppCompatSpinner>
 
     </LinearLayout>
 
@@ -125,11 +128,13 @@
             android:text="City"
             android:textSize="20sp"/>
 
-        <EditText
-            android:id="@+id/city_add_new_et"
+        <android.support.v7.widget.AppCompatSpinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAllCaps="false"/>
+            android:id="@+id/city_spinner_add_post"
+            android:entries="@array/city_spinner_add_post">
+
+        </android.support.v7.widget.AppCompatSpinner>
 
     </LinearLayout>
 
@@ -206,13 +211,24 @@
             android:textSize="20sp"/>
 
         <EditText
-            android:id="@+id/Additional_instruction_add_new_et"
+            android:id="@+id/additional_instruction_add_new_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAllCaps="false"
-            android:maxlines="4"/>
+            android:lines="4"/>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/add_bt_add_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Post Requirement"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:padding="10dp"
+        android:textColor="#fff"
+        android:background="@drawable/round_button"/>
 
 
 </LinearLayout>
