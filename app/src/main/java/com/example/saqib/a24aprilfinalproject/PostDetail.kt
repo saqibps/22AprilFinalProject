@@ -3,11 +3,13 @@ package com.example.saqib.a24aprilfinalproject
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import android.widget.Toast.*
+import com.google.firebase.database.DatabaseReference
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -21,6 +23,14 @@ private const val ARG_PARAM2 = "param2"
  */
 class PostDetail : Fragment() {
 
+    lateinit var postDatabaseReference: DatabaseReference
+    lateinit var commentDatabaseReference:DatabaseReference
+    lateinit var volunteerDatabaseReference:DatabaseReference
+    lateinit var volunteerList:ArrayList<Volunteer>
+    lateinit var commentList:ArrayList<Comment>
+    lateinit var volunteerRecyclerView:RecyclerView
+    lateinit var commentRecyclerView: RecyclerView
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -30,7 +40,6 @@ class PostDetail : Fragment() {
         if (bundle != null) {
              Toast.makeText(context,"${bundle.getString("key")}",Toast.LENGTH_SHORT).show()
         }
-
 
         return view
     }
