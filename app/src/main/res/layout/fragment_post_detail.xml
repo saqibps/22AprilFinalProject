@@ -146,7 +146,7 @@
                 android:textColor="#000"/>
 
             <TextView
-                android:id="@+id/Location_tv_post_detail_fragment"
+                android:id="@+id/location_tv_post_detail_fragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="Karachi,Sindh,Pakistan "

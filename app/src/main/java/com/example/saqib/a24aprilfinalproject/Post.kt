@@ -13,8 +13,8 @@ data class Post(val key:String,
                 val location:String,
                 val hospital:String,
                 val relationWithPatient:String,
-                val commentsId: String?,
-                val list: List<Volunteer>?) {
+                val commentsKey: String?,
+                val volunteersKey: String?) {
     constructor():this("","","",0,0,"","","",
-            "",0,"","","","",null)
+            "",0,"","","","","")
 }
