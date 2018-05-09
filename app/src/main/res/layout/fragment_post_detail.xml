@@ -280,7 +280,7 @@
                 android:textColor="#BF360C"/>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/volunteers_recyler_view_post_detail"
+                android:id="@+id/volunteers_recycler_view_post_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>

@@ -52,7 +52,7 @@ class AddPostActivity : AppCompatActivity() {
 
                 val key:String = postdatabaseReference.push().key
                 val post = Post(key,uid,userName,unitsReq,0,bloodGroup,urgency,contact,additionInstruction,
-                        0,location,hospital,relation,null,null)
+                        location,hospital,relation,null,null)
                 postdatabaseReference.child(key).setValue(post)
                 finish()
             }

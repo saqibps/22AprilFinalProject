@@ -70,14 +70,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
-            val fragment:Fragment = supportFragmentManager.findFragmentByTag("home_fragment")
-            if (fragment is HomeFragment) {
                 super.onBackPressed()
                 finish()
-//
-//                Log.v(this.toString(),"backstackentrycount: ${supportFragmentManager.backStackEntryCount}")
-//                supportFragmentManager.popBackStack()
-            }
         }
     }
 

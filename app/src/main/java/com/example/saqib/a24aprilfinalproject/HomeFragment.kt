@@ -13,7 +13,8 @@ import com.example.saqib.a24aprilfinalproject.Adapters.PostAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_home.*
-import java.util.ArrayList
+import java.util.*
+import kotlin.collections.HashMap
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -43,7 +44,7 @@ class HomeFragment : Fragment() {
         val uid = auth.currentUser!!.uid
         databaseReference = FirebaseDatabase.getInstance().reference.child("posts")
         postList = arrayListOf()
-        postAdapter = PostAdapter(postList) {post ->
+        postAdapter = PostAdapter(postList,uid) {post ->
             val bundle = Bundle()
             bundle.putString("key",post.key)
             val postDetail = PostDetail()
@@ -57,12 +58,15 @@ class HomeFragment : Fragment() {
         databaseReference.addChildEventListener(object : ChildEventListener{
             override fun onChildAdded(snapshot: DataSnapshot, p1: String?) {
                 if (snapshot != null) {
-                    val post = snapshot.getValue(Post::class.java)
-                    if (post != null) {
-                        postList.add(post)
-                        postAdapter.notifyDataSetChanged()
+                    val map = snapshot.value as Map<*, *>
+                     val key: String = map.get("key").toString()
+                    Toast.makeText(context,"$key",Toast.LENGTH_SHORT).show()
+
+//                    val post = snapshot.getValue(Post::class.java)
+//                    if (post != null) {
+//                        postList.add(post)
+//                        postAdapter.notifyDataSetChanged()
                     }
-                }
 
             }
             override fun onCancelled(p0: DatabaseError?) {}

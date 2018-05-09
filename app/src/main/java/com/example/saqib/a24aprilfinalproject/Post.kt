@@ -9,12 +9,11 @@ data class Post(val key:String,
                 val urgency:String,
                 val contact:String,
                 val additionalInstruction:String,
-                var volunteersUptilNow:Int,
                 val location:String,
                 val hospital:String,
                 val relationWithPatient:String,
                 val commentsKey: String?,
-                val volunteersKey: String?) {
+                val volunteerList: ArrayList<Volunteer>?) {
     constructor():this("","","",0,0,"","","",
-            "",0,"","","","","")
+            "","","","","",null)
 }

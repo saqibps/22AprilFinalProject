@@ -9,24 +9,21 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.saqib.a24aprilfinalproject.Post
 import com.example.saqib.a24aprilfinalproject.R
+import com.example.saqib.a24aprilfinalproject.Volunteer
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class PostAdapter(val postList: ArrayList<Post>,val listener:(Post) -> Unit) : RecyclerView.Adapter<PostAdapter.PostItemVIewHolder>() {
+class PostAdapter(val postList: ArrayList<Post>,val uid:String, val listener:(Post) -> Unit) : RecyclerView.Adapter<PostAdapter.PostItemVIewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostItemVIewHolder {
         val itemView:View = LayoutInflater.from(parent.context).inflate(R.layout.post_item_layout,parent,false)
         return PostItemVIewHolder(itemView)
     }
-
     override fun getItemCount()= postList.size
-
-
     override fun onBindViewHolder(holder: PostItemVIewHolder, position: Int) {
         holder.bindView(postList[position])
     }
 
     inner class PostItemVIewHolder(itemView:View): RecyclerView.ViewHolder(itemView) {
-
         val nameTV:TextView = itemView.findViewById(R.id.name_tv_post_item)
         val descTV:TextView = itemView.findViewById(R.id.desc_tv_post_item)
         val urgencyTV:TextView = itemView.findViewById(R.id.urgency_tv_post_item)
@@ -43,16 +40,20 @@ class PostAdapter(val postList: ArrayList<Post>,val listener:(Post) -> Unit) : R
             urgencyTV.text = post.urgency
             contactTV.text = post.contact
             instructionTV.text = post.additionalInstruction
-            volunteerTV.text = post.volunteersUptilNow.toString()
+            if (post.volunteerList != null) {
+                volunteerTV.text = post.volunteerList.size.toString()
+            } else {
+                volunteerTV.text = "0"
+            }
+
             requirementTV.text = (post.unitsRequired-post.donationReceived).toString()
             volunteerBT.setOnClickListener{
-            val databaseRef:DatabaseReference = FirebaseDatabase.getInstance().reference.child("posts")
-                    .child(post.key).child("volunteersUptilNow")
-
-               var volunteers = post.volunteersUptilNow
-                volunteers++
-                databaseRef.setValue(volunteers)
-                post.volunteersUptilNow = volunteers
+                val volunteer = Volunteer(uid,"Not Donated")
+                val volunteerListReference = FirebaseDatabase.getInstance().
+                        reference.child("posts").child(post.key).child("volunteerList").child(uid)
+                volunteerListReference.setValue(volunteer)
+                post.volunteerList?.add(volunteer)
+                volunteerTV.text = post.volunteerList?.size.toString()
                 notifyDataSetChanged()
             }
             commentBT.setOnClickListener {
@@ -61,8 +62,7 @@ class PostAdapter(val postList: ArrayList<Post>,val listener:(Post) -> Unit) : R
             itemView.setOnClickListener {
                 listener(post)
             }
-
         }
-
     }
+
 }
