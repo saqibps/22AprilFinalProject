@@ -1,5 +1,5 @@
 package com.example.saqib.a24aprilfinalproject
 
-data class Volunteer(val volunteerId:String,var donationStatus:String) {
+data class Volunteer(val uid:String,val donationStatus:String) {
     constructor():this("","")
 }

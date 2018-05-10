@@ -1,6 +1,8 @@
 package com.example.saqib.a24aprilfinalproject.Adapters
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +12,7 @@ import android.widget.Toast
 import com.example.saqib.a24aprilfinalproject.Post
 import com.example.saqib.a24aprilfinalproject.R
 import com.example.saqib.a24aprilfinalproject.Volunteer
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 
 class PostAdapter(val postList: ArrayList<Post>,val uid:String, val listener:(Post) -> Unit) : RecyclerView.Adapter<PostAdapter.PostItemVIewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostItemVIewHolder {
@@ -39,22 +40,42 @@ class PostAdapter(val postList: ArrayList<Post>,val uid:String, val listener:(Po
             descTV.text = "${post.unitsRequired} units of ${post.bloodGroup} blood Required.\nAt ${post.hospital} for my ${post.relationWithPatient}."
             urgencyTV.text = post.urgency
             contactTV.text = post.contact
+                volunteerTV.text = post.volunteerUptilNow.toString()
             instructionTV.text = post.additionalInstruction
-            if (post.volunteerList != null) {
-                volunteerTV.text = post.volunteerList.size.toString()
-            } else {
-                volunteerTV.text = "0"
-            }
-
             requirementTV.text = (post.unitsRequired-post.donationReceived).toString()
             volunteerBT.setOnClickListener{
-                val volunteer = Volunteer(uid,"Not Donated")
-                val volunteerListReference = FirebaseDatabase.getInstance().
-                        reference.child("posts").child(post.key).child("volunteerList").child(uid)
-                volunteerListReference.setValue(volunteer)
-                post.volunteerList?.add(volunteer)
-                volunteerTV.text = post.volunteerList?.size.toString()
-                notifyDataSetChanged()
+                var key = post.volunteerKey
+                 if(volunteerBT.text.equals("Volunteer")) {
+                     if (key.equals("")) {
+                         key = FirebaseDatabase.getInstance().reference.child("volunteers").push().key
+                         FirebaseDatabase.getInstance().reference.child("posts").child(post.key).child("volunteerKey").setValue(key)
+                         post.volunteerKey = key
+                     }
+                     volunteerBT.text = "Unvolunteer"
+                     val volunteer = Volunteer(uid,"Not Donated")
+                     FirebaseDatabase.getInstance().reference.child("volunteers").child(key).child(uid).setValue(volunteer)
+                     var volunteers = post.volunteerUptilNow
+                     volunteers++
+                     post.volunteerUptilNow = volunteers
+                     FirebaseDatabase.getInstance().reference.child("posts").child(post.key).child("volunteerUptilNow").setValue(volunteers)
+                     notifyDataSetChanged()
+                 } else {
+                     volunteerBT.text = "Volunteer"
+                     FirebaseDatabase.getInstance().reference.child("volunteers").child(key).child(uid).removeValue()
+                     var volunteers = post.volunteerUptilNow
+                     volunteers--
+                     post.volunteerUptilNow = volunteers
+                     FirebaseDatabase.getInstance().reference.child("posts").child(post.key).child("volunteerUptilNow").setValue(volunteers)
+                     notifyDataSetChanged()
+                 }
+
+//                val volunteer = Volunteer(key,uid,"Not Donated")
+//                FirebaseDatabase.getInstance().reference.child("volunteers").child(key).setValue(volunteer)
+//                var volunteers = post.volunteerUptilNow
+//                volunteers++
+//                post.volunteerUptilNow = volunteers
+//                FirebaseDatabase.getInstance().reference.child("posts").child(post.key).child("volunteerUptilNow").setValue(volunteers)
+//                notifyDataSetChanged()
             }
             commentBT.setOnClickListener {
 

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import android.widget.Toast
 import com.example.saqib.a24aprilfinalproject.Adapters.PostAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.util.*
 import kotlin.collections.HashMap
@@ -58,16 +60,13 @@ class HomeFragment : Fragment() {
         databaseReference.addChildEventListener(object : ChildEventListener{
             override fun onChildAdded(snapshot: DataSnapshot, p1: String?) {
                 if (snapshot != null) {
-                    val map = snapshot.value as Map<*, *>
-                     val key: String = map.get("key").toString()
-                    Toast.makeText(context,"$key",Toast.LENGTH_SHORT).show()
-
-//                    val post = snapshot.getValue(Post::class.java)
-//                    if (post != null) {
-//                        postList.add(post)
-//                        postAdapter.notifyDataSetChanged()
+                    val post = snapshot.getValue(Post::class.java)
+                    if (post != null) {
+                        postList.add(post)
+                        postAdapter.notifyDataSetChanged()
                     }
 
+                }
             }
             override fun onCancelled(p0: DatabaseError?) {}
             override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}

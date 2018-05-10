@@ -1,10 +1,13 @@
 package com.example.saqib.a24aprilfinalproject.Adapters
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import com.example.saqib.a24aprilfinalproject.R
 import com.example.saqib.a24aprilfinalproject.User
 import com.example.saqib.a24aprilfinalproject.Volunteer
@@ -27,20 +30,23 @@ class VolunteerAdapter(val volunteerList:ArrayList<Volunteer>,val postBloodGroup
         val bloodGroupTV:TextView = itemView.findViewById(R.id.blood_group_tv_volunteer_item)
         val exchangeTV:TextView = itemView.findViewById(R.id.exchange_donation_tv_volunteer_item)
         val donationStatusTV:TextView = itemView.findViewById(R.id.donation_status_tv_volunteer_item)
+
         fun bindView(volunteer: Volunteer) {
             var fullName:String = ""
             var bloodGroup:String = ""
-            val databaseReference = FirebaseDatabase.getInstance().reference.child("users").child(volunteer.volunteerId)
-            databaseReference.addValueEventListener(object :ValueEventListener{
+            val databaseReference = FirebaseDatabase.getInstance().reference.child("users").child(volunteer.uid)
+            databaseReference.addListenerForSingleValueEvent(object :ValueEventListener{
                 override fun onCancelled(p0: DatabaseError?) {}
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val user:User = snapshot.getValue(User::class.java)!!
                     fullName = "${user.firstName} ${user.lastName}"
+                    Log.e("my checking","full Name : $fullName")
                     bloodGroup = user.bloodGroup
+                    Log.e("my checking","blood group : $bloodGroup")
                 }
             })
 
-            nameTV.text = fullName
+            nameTV.text = "Hard coded name in adapter"
             bloodGroupTV.text = bloodGroup
             if (bloodGroup.equals(postBloodGroup)) {
                 exchangeTV.visibility = View.GONE
