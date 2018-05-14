@@ -14,9 +14,7 @@ class CommentAdapter(val commentList:ArrayList<Comment>): RecyclerView.Adapter<C
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.comment_item_layout,parent, false)
         return CommentViewHolder(itemView)
     }
-
     override fun getItemCount()= commentList.size
-
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
         holder.bindView(commentList[position])
     }

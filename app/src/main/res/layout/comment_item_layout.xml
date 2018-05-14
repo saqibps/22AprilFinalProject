@@ -21,13 +21,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="Sample name"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:textColor="@android:color/black"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
+            android:textSize="22sp"
             android:text="---"
             android:paddingLeft="5dp"/>
 
@@ -35,10 +35,11 @@
                 android:id="@+id/desc_tv_comment_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Sample Group"
+                tools:text="Sample Comment"
                 android:maxLines="4"
+                android:textColor="@android:color/holo_blue_light"
                 android:ellipsize="end"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:paddingLeft="10dp"/>
 
     </LinearLayout>

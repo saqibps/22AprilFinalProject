@@ -71,6 +71,8 @@ class PostAdapter(val postList: ArrayList<Post>,val uid:String, val listener:(Po
                 }
             }
                 commentBT.setOnClickListener {
+
+
                 }
                 itemView.setOnClickListener {
                     listener(post)

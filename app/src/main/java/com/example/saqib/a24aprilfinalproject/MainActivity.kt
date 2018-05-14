@@ -105,7 +105,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .commit()
             }
             R.id.my_request -> {
-
+                supportFragmentManager.beginTransaction()
+                        .replace(R.id.frame_layout,MyPostFragment())
+                        .commit()
             }
             R.id.post_requirements -> {
 

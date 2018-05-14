@@ -51,6 +51,7 @@ class HomeFragment : Fragment() {
             bundle.putString("postKey",post.key)
             bundle.putString("volunteerKey",post.volunteerKey)
             bundle.putString("postBloodGroup",post.bloodGroup)
+            bundle.putString("postCommentKey",post.commentsKey)
             val postDetail = PostDetail()
             postDetail.arguments = bundle
             activity!!.supportFragmentManager.beginTransaction().replace(R.id.frame_layout,postDetail).commit()

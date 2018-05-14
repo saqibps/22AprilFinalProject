@@ -6,10 +6,14 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import android.widget.Toast.*
 import com.example.saqib.a24aprilfinalproject.Adapters.CommentAdapter
@@ -39,8 +43,12 @@ class PostDetail : Fragment() {
     lateinit var volunteerRecyclerView:RecyclerView
     lateinit var volunteerAdapter: VolunteerAdapter
     lateinit var commentRecyclerView: RecyclerView
+    lateinit var comment_et:EditText
+    lateinit var comment_bt:Button
     lateinit var commentAdapter: CommentAdapter
     lateinit var postKey:String
+    lateinit var post: Post
+    lateinit var userName:String
     var postBloodGroup:String = ""
     var commentKey:String = ""
     var volunteerKey:String = ""
@@ -49,31 +57,42 @@ class PostDetail : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         val view:View = inflater.inflate(R.layout.fragment_post_detail, container, false)
-
         val bundle = this.arguments
         if (bundle != null) {
              postKey = bundle.getString("postKey")
             volunteerKey = bundle.getString("volunteerKey")
             postBloodGroup = bundle.getString("postBloodGroup")
+            commentKey = bundle.getString("postCommentKey")
         }
-        volunteerList = arrayListOf()
         auth = FirebaseAuth.getInstance()
         uid = auth.currentUser!!.uid
 
-        volunteerAdapter = VolunteerAdapter(volunteerList,postBloodGroup)
-        volunteerRecyclerView = view.findViewById(R.id.volunteers_recycler_view_post_detail)
-        volunteerRecyclerView.layoutManager = LinearLayoutManager(context)
-        volunteerRecyclerView.adapter = volunteerAdapter
-        volunteerDatabaseReference = FirebaseDatabase.getInstance().reference.child("volunteers").child(volunteerKey)
-        Log.e("In Post Detail","Volunteers key : $volunteerKey")
+        val usersDatabaseRef = FirebaseDatabase.getInstance().reference.child("users").child(uid)
+        usersDatabaseRef.addListenerForSingleValueEvent(object :ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {}
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val user = snapshot.getValue(User::class.java)
+                if (user != null) {
+                    userName = "${user.firstName} ${user.lastName}"
+                }
+            }
+        })
+             comment_et = view.findViewById(R.id.comment_et_post_detail_fragment)
+             comment_bt = view.findViewById(R.id.comment_bt_post_detail_fragment)
+        comment_et.addTextChangedListener(object :TextWatcher{
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                comment_bt.isEnabled = comment_et.text.toString().isNotEmpty()
+            }
+        })
 
         postDatabaseReference = FirebaseDatabase.getInstance().reference.child("posts").child(postKey)
         postDatabaseReference.addValueEventListener(object :ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {}
             override fun onDataChange(snapshot: DataSnapshot?) {
-                val post = snapshot!!.getValue(Post::class.java)
+                post = snapshot!!.getValue(Post::class.java)!!
                 name_tv_post_detail_fragment.text = post!!.userName
                 units_req_tv_post_detail_fragment.text = post.unitsRequired.toString()
                 donation_received_tv_post_detail_fragment.text = post.donationReceived.toString()
@@ -85,11 +104,20 @@ class PostDetail : Fragment() {
                 relation_tv_post_detail_fragment.text = post.relationWithPatient
                 contact_tv_post_detail_fragment.text = post.contact
                 instruction_tv_post_detail_fragment.text = post.additionalInstruction
-                commentKey = post.commentsKey!!
-                Log.e("InValueEvent","${post.volunteerKey}")
-                Log.e("Now Volunteer key is","$volunteerKey")
+                // Since this listener callbacks run after child listener of comments database and volunteer database,
+                        // SO we are not saving commentkey and volunteerkey value here.
+                        // else we are passing these values from previous fragment.
+//                volunteerKey = post.volunteerKey!!
+//                commentKey = post.commentsKey!!
             }
         })
+
+        volunteerList = arrayListOf()
+        volunteerAdapter = VolunteerAdapter(volunteerList,postBloodGroup)
+        volunteerRecyclerView = view.findViewById(R.id.volunteers_recycler_view_post_detail)
+        volunteerRecyclerView.layoutManager = LinearLayoutManager(context)
+        volunteerRecyclerView.adapter = volunteerAdapter
+        volunteerDatabaseReference = FirebaseDatabase.getInstance().reference.child("volunteers").child(volunteerKey)
         volunteerDatabaseReference.addChildEventListener(object :ChildEventListener {
             override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
             override fun onChildChanged(p0: DataSnapshot?, p1: String?) {}
@@ -98,48 +126,47 @@ class PostDetail : Fragment() {
             override fun onChildAdded(snapshot: DataSnapshot?, p1: String?) {
                 val volunteer = snapshot!!.getValue(Volunteer::class.java)
                 if (volunteer != null) {
-//                        Toast.makeText(context,"volunteer key : $volunteerKey",Toast.LENGTH_LONG).show()
-                    if (volunteer.donationStatus.equals("")) {
-                        Toast.makeText(context, "Donation status is empty", Toast.LENGTH_SHORT).show()
-                    }
                     volunteerList.add(volunteer)
                     volunteerAdapter.notifyDataSetChanged()
                 }
             }
         })
+            commentList = arrayListOf()
+            commentAdapter = CommentAdapter(commentList)
+            commentRecyclerView = view.findViewById(R.id.comments_recycler_view_post_detail)
+            commentRecyclerView.layoutManager = LinearLayoutManager(context)
+            commentRecyclerView.adapter = commentAdapter
+            commentDatabaseReference = FirebaseDatabase.getInstance().reference.child("comments").child(commentKey)
+            commentDatabaseReference.addChildEventListener(object :ChildEventListener{
+                override fun onCancelled(p0: DatabaseError?) {}
+                override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
+                override fun onChildChanged(p0: DataSnapshot?, p1: String?) {}
+                override fun onChildRemoved(p0: DataSnapshot?) {}
+                override fun onChildAdded(snapshot: DataSnapshot, p1: String?) {
+                    Log.e("In post detail","On child added is called")
+                    val comment = snapshot.getValue(Comment::class.java)
+                    if (comment != null) {
+                        commentList.add(comment)
+                        commentAdapter.notifyDataSetChanged()
+                    }
+                }
 
-
-//
-//        if (commentKey != null) {
-//            commentList = arrayListOf()
-//            commentAdapter = CommentAdapter(commentList)
-//            commentRecyclerView = view.findViewById(R.id.comments_recycler_view_post_detail)
-//            commentDatabaseReference = FirebaseDatabase.getInstance().reference.child("comments").child(commentKey)
-//            commentDatabaseReference.addChildEventListener(object :ChildEventListener{
-//                override fun onCancelled(p0: DatabaseError?) {}
-//                override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
-//                override fun onChildChanged(p0: DataSnapshot?, p1: String?) {}
-//                override fun onChildAdded(snapshot: DataSnapshot, p1: String?) {
-//                    val comment = snapshot.getValue(Comment::class.java)
-//                    if (comment != null) {
-//                        commentList.add(comment)
-//                        commentAdapter.notifyDataSetChanged()
-//                    }
-//                }
-//                override fun onChildRemoved(p0: DataSnapshot?) {}
-//            })
-//        }
-
+            })
+        comment_bt.setOnClickListener {
+            val commentDesc = comment_et.text.toString()
+            if (commentKey.equals("")) {
+                commentKey = FirebaseDatabase.getInstance().reference.child("comments").push().key
+                FirebaseDatabase.getInstance().reference.child("posts").child(postKey).child("commentsKey").setValue(commentKey)
+                post.commentsKey = commentKey
+            }
+            val  particularCommentKey = FirebaseDatabase.getInstance().reference.child("comments")
+                    .child(commentKey).push().key
+            val comment = Comment(userName,particularCommentKey,commentDesc)
+            Log.e("In Post detail","post comment key: $commentKey, particular comment Key: $particularCommentKey")
+            FirebaseDatabase.getInstance().reference.child("comments").child(commentKey).child(particularCommentKey)
+                    .setValue(comment)
+            comment_et.setText("")
+        }
         return view
-    }
-
-    override fun onAttach(context: Context?) {
-        Log.v(this.toString(),"On Attached is called")
-        super.onAttach(context)
-    }
-
-    override fun onDestroy() {
-        Log.v(this.toString(),"On Destroy is called")
-        super.onDestroy()
     }
 }
