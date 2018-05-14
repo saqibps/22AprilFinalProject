@@ -25,65 +25,56 @@ class PostAdapter(val postList: ArrayList<Post>,val uid:String, val listener:(Po
     }
 
     inner class PostItemVIewHolder(itemView:View): RecyclerView.ViewHolder(itemView) {
-        val nameTV:TextView = itemView.findViewById(R.id.name_tv_post_item)
-        val descTV:TextView = itemView.findViewById(R.id.desc_tv_post_item)
-        val urgencyTV:TextView = itemView.findViewById(R.id.urgency_tv_post_item)
-        val contactTV:TextView = itemView.findViewById(R.id.contact_tv_post_item)
-        val instructionTV:TextView = itemView.findViewById(R.id.instructions_tv_post_item)
-        val volunteerTV:TextView = itemView.findViewById(R.id.volunteers_tv_post_item)
-        val requirementTV:TextView = itemView.findViewById(R.id.current_requirement_tv_post_item)
-        val volunteerBT:Button = itemView.findViewById(R.id.volunteer_bt_post_item)
-        val commentBT:Button = itemView.findViewById(R.id.comment_bt_post_item)
+        val nameTV: TextView = itemView.findViewById(R.id.name_tv_post_item)
+        val descTV: TextView = itemView.findViewById(R.id.desc_tv_post_item)
+        val urgencyTV: TextView = itemView.findViewById(R.id.urgency_tv_post_item)
+        val contactTV: TextView = itemView.findViewById(R.id.contact_tv_post_item)
+        val instructionTV: TextView = itemView.findViewById(R.id.instructions_tv_post_item)
+        val volunteerTV: TextView = itemView.findViewById(R.id.volunteers_tv_post_item)
+        val requirementTV: TextView = itemView.findViewById(R.id.current_requirement_tv_post_item)
+        val volunteerBT: Button = itemView.findViewById(R.id.volunteer_bt_post_item)
+        val commentBT: Button = itemView.findViewById(R.id.comment_bt_post_item)
 
-        fun bindView(post:Post){
+        fun bindView(post: Post) {
             nameTV.text = post.userName
             descTV.text = "${post.unitsRequired} units of ${post.bloodGroup} blood Required.\nAt ${post.hospital} for my ${post.relationWithPatient}."
             urgencyTV.text = post.urgency
             contactTV.text = post.contact
-                volunteerTV.text = post.volunteerUptilNow.toString()
+            volunteerTV.text = post.volunteerUptilNow.toString()
             instructionTV.text = post.additionalInstruction
-            requirementTV.text = (post.unitsRequired-post.donationReceived).toString()
-            volunteerBT.setOnClickListener{
-                var key = post.volunteerKey
-                 if(volunteerBT.text.equals("Volunteer")) {
-                     if (key.equals("")) {
-                         key = FirebaseDatabase.getInstance().reference.child("volunteers").push().key
-                         FirebaseDatabase.getInstance().reference.child("posts").child(post.key).child("volunteerKey").setValue(key)
-                         post.volunteerKey = key
-                     }
-                     volunteerBT.text = "Unvolunteer"
-                     val volunteer = Volunteer(uid,"Not Donated")
-                     FirebaseDatabase.getInstance().reference.child("volunteers").child(key).child(uid).setValue(volunteer)
-                     var volunteers = post.volunteerUptilNow
-                     volunteers++
-                     post.volunteerUptilNow = volunteers
-                     FirebaseDatabase.getInstance().reference.child("posts").child(post.key).child("volunteerUptilNow").setValue(volunteers)
-                     notifyDataSetChanged()
-                 } else {
-                     volunteerBT.text = "Volunteer"
-                     FirebaseDatabase.getInstance().reference.child("volunteers").child(key).child(uid).removeValue()
-                     var volunteers = post.volunteerUptilNow
-                     volunteers--
-                     post.volunteerUptilNow = volunteers
-                     FirebaseDatabase.getInstance().reference.child("posts").child(post.key).child("volunteerUptilNow").setValue(volunteers)
-                     notifyDataSetChanged()
-                 }
+            requirementTV.text = (post.unitsRequired - post.donationReceived).toString()
 
-//                val volunteer = Volunteer(key,uid,"Not Donated")
-//                FirebaseDatabase.getInstance().reference.child("volunteers").child(key).setValue(volunteer)
-//                var volunteers = post.volunteerUptilNow
-//                volunteers++
-//                post.volunteerUptilNow = volunteers
-//                FirebaseDatabase.getInstance().reference.child("posts").child(post.key).child("volunteerUptilNow").setValue(volunteers)
-//                notifyDataSetChanged()
+            volunteerBT.setOnClickListener {
+                var volunteerKey = post.volunteerKey
+                if (volunteerBT.text.equals("Volunteer")) {
+                    if (volunteerKey.equals("")) {
+                        volunteerKey = FirebaseDatabase.getInstance().reference.child("volunteers").push().key
+                        FirebaseDatabase.getInstance().reference.child("posts").child(post.key).child("volunteerKey").setValue(volunteerKey)
+                        post.volunteerKey = volunteerKey
+                    }
+                    volunteerBT.text = "Unvolunteer"
+                    val volunteer = Volunteer(uid, "Not Donated")
+                    FirebaseDatabase.getInstance().reference.child("volunteers").child(volunteerKey).child(uid).setValue(volunteer)
+                    var volunteers = post.volunteerUptilNow
+                    volunteers++
+                    post.volunteerUptilNow = volunteers
+                    FirebaseDatabase.getInstance().reference.child("posts").child(post.key).child("volunteerUptilNow").setValue(volunteers)
+                    notifyDataSetChanged()
+                } else {
+                    volunteerBT.text = "Volunteer"
+                    FirebaseDatabase.getInstance().reference.child("volunteers").child(volunteerKey).child(uid).removeValue()
+                    var volunteers = post.volunteerUptilNow
+                    volunteers--
+                    post.volunteerUptilNow = volunteers
+                    FirebaseDatabase.getInstance().reference.child("posts").child(post.key).child("volunteerUptilNow").setValue(volunteers)
+                    notifyDataSetChanged()
+                }
             }
-            commentBT.setOnClickListener {
-
-            }
-            itemView.setOnClickListener {
-                listener(post)
+                commentBT.setOnClickListener {
+                }
+                itemView.setOnClickListener {
+                    listener(post)
+                }
             }
         }
-    }
-
 }

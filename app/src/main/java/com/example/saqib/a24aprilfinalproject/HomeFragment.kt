@@ -48,7 +48,9 @@ class HomeFragment : Fragment() {
         postList = arrayListOf()
         postAdapter = PostAdapter(postList,uid) {post ->
             val bundle = Bundle()
-            bundle.putString("key",post.key)
+            bundle.putString("postKey",post.key)
+            bundle.putString("volunteerKey",post.volunteerKey)
+            bundle.putString("postBloodGroup",post.bloodGroup)
             val postDetail = PostDetail()
             postDetail.arguments = bundle
             activity!!.supportFragmentManager.beginTransaction().replace(R.id.frame_layout,postDetail).commit()
@@ -63,6 +65,7 @@ class HomeFragment : Fragment() {
                     val post = snapshot.getValue(Post::class.java)
                     if (post != null) {
                         postList.add(post)
+                        Log.e("In Home Fragment", "Volunteer key : ${post.volunteerKey}")
                         postAdapter.notifyDataSetChanged()
                     }
 

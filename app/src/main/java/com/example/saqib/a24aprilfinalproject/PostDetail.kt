@@ -54,13 +54,23 @@ class PostDetail : Fragment() {
 
         val bundle = this.arguments
         if (bundle != null) {
-             postKey = bundle.getString("key")
+             postKey = bundle.getString("postKey")
+            volunteerKey = bundle.getString("volunteerKey")
+            postBloodGroup = bundle.getString("postBloodGroup")
         }
         volunteerList = arrayListOf()
         auth = FirebaseAuth.getInstance()
         uid = auth.currentUser!!.uid
+
+        volunteerAdapter = VolunteerAdapter(volunteerList,postBloodGroup)
+        volunteerRecyclerView = view.findViewById(R.id.volunteers_recycler_view_post_detail)
+        volunteerRecyclerView.layoutManager = LinearLayoutManager(context)
+        volunteerRecyclerView.adapter = volunteerAdapter
+        volunteerDatabaseReference = FirebaseDatabase.getInstance().reference.child("volunteers").child(volunteerKey)
+        Log.e("In Post Detail","Volunteers key : $volunteerKey")
+
         postDatabaseReference = FirebaseDatabase.getInstance().reference.child("posts").child(postKey)
-        postDatabaseReference.addListenerForSingleValueEvent(object :ValueEventListener{
+        postDatabaseReference.addValueEventListener(object :ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {}
             override fun onDataChange(snapshot: DataSnapshot?) {
                 val post = snapshot!!.getValue(Post::class.java)
@@ -69,7 +79,6 @@ class PostDetail : Fragment() {
                 donation_received_tv_post_detail_fragment.text = post.donationReceived.toString()
                 still_required_tv_post_detail_fragment.text = (post.unitsRequired - post.donationReceived).toString()
                 blood_group_tv_post_detail_fragment.text = post.bloodGroup
-                postBloodGroup = post.bloodGroup
                 location_tv_post_detail_fragment.text = post.location
                 hospital_tv_post_detail_fragment.text = post.hospital
                 urgency_tv_post_detail_fragment.text = post.urgency
@@ -77,40 +86,30 @@ class PostDetail : Fragment() {
                 contact_tv_post_detail_fragment.text = post.contact
                 instruction_tv_post_detail_fragment.text = post.additionalInstruction
                 commentKey = post.commentsKey!!
-                volunteerKey = post.volunteerKey!!
+                Log.e("InValueEvent","${post.volunteerKey}")
+                Log.e("Now Volunteer key is","$volunteerKey")
             }
         })
-            volunteerAdapter = VolunteerAdapter(volunteerList,postBloodGroup)
-            volunteerRecyclerView = view.findViewById(R.id.volunteers_recycler_view_post_detail)
-            volunteerRecyclerView.layoutManager = LinearLayoutManager(context)
-            volunteerRecyclerView.adapter = volunteerAdapter
-            volunteerDatabaseReference = FirebaseDatabase.getInstance().reference.child("volunteers").child(volunteerKey)
-            volunteerDatabaseReference.addValueEventListener(object :ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot?) {
-                    val volunteer = snapshot!!.getValue(Volunteer::class.java)
-                    if (volunteer != null) {
+        volunteerDatabaseReference.addChildEventListener(object :ChildEventListener {
+            override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
+            override fun onChildChanged(p0: DataSnapshot?, p1: String?) {}
+            override fun onChildRemoved(p0: DataSnapshot?) {}
+            override fun onCancelled(p0: DatabaseError?) {}
+            override fun onChildAdded(snapshot: DataSnapshot?, p1: String?) {
+                val volunteer = snapshot!!.getValue(Volunteer::class.java)
+                if (volunteer != null) {
 //                        Toast.makeText(context,"volunteer key : $volunteerKey",Toast.LENGTH_LONG).show()
-                        if (volunteer.donationStatus.equals("")) {
-                            Toast.makeText(context, "Donation status is empty", Toast.LENGTH_SHORT).show()
-                        }
-                        volunteerList.add(volunteer)
-                        volunteerAdapter.notifyDataSetChanged()
+                    if (volunteer.donationStatus.equals("")) {
+                        Toast.makeText(context, "Donation status is empty", Toast.LENGTH_SHORT).show()
                     }
+                    volunteerList.add(volunteer)
+                    volunteerAdapter.notifyDataSetChanged()
                 }
-                override fun onCancelled(p0: DatabaseError?) {}
-//                override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
-//                override fun onChildChanged(p0: DataSnapshot?, p1: String?) {}
-//                override fun onChildAdded(snapshot: DataSnapshot, p1: String?) {
-//                    val volunteer = snapshot.getValue(Volunteer::class.java)
-//                    if (volunteer != null) {
-//                        Toast.makeText(context,"volunteer key : $volunteerKey",Toast.LENGTH_LONG).show()
-//                        Toast.makeText(context,"${volunteer.donationStatus} & ${volunteer.uid}",Toast.LENGTH_SHORT).show()
-//                        volunteerList.add(volunteer)
-//                        volunteerAdapter.notifyDataSetChanged()
-//                    }
-//                }
-//                override fun onChildRemoved(p0: DataSnapshot?) {}
-            })
+            }
+        })
+
+
+//
 //        if (commentKey != null) {
 //            commentList = arrayListOf()
 //            commentAdapter = CommentAdapter(commentList)
