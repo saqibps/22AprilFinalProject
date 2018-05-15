@@ -8,7 +8,7 @@ import android.widget.TextView
 import com.example.saqib.a24aprilfinalproject.Post
 import com.example.saqib.a24aprilfinalproject.R
 
-class MyPostAdapter(val postList:ArrayList<Post>): RecyclerView.Adapter<MyPostAdapter.MyPostViewHolder>() {
+class MyPostAdapter(val postList:ArrayList<Post>,val listener: (Post) -> Unit): RecyclerView.Adapter<MyPostAdapter.MyPostViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyPostViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.my_post_item_layout, parent,false)
         return MyPostViewHolder(itemView)
@@ -26,7 +26,10 @@ class MyPostAdapter(val postList:ArrayList<Post>): RecyclerView.Adapter<MyPostAd
         fun bindView(post: Post) {
             val desc = "Required ${post.unitsRequired} units of ${post.bloodGroup} at ${post.hospital}"
             descTV.text = desc
-            statusTV.text = "Hard coded in MyPostAdapter"
+            statusTV.text = if ((post.unitsRequired-post.donationReceived) == 0) {"Completed"} else "Not fullfilled"
+            itemView.setOnClickListener {
+                listener(post)
+            }
         }
 
     }

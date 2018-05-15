@@ -1,6 +1,10 @@
 package com.example.saqib.a24aprilfinalproject.Adapters
 
+import android.app.Activity
+import android.app.Fragment
 import android.content.Context
+import android.os.Bundle
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,11 +14,13 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.example.saqib.a24aprilfinalproject.Post
+import com.example.saqib.a24aprilfinalproject.PostDetail
 import com.example.saqib.a24aprilfinalproject.R
 import com.example.saqib.a24aprilfinalproject.Volunteer
 import com.google.firebase.database.*
 
-class PostAdapter(val postList: ArrayList<Post>,val uid:String, val listener:(Post) -> Unit) : RecyclerView.Adapter<PostAdapter.PostItemVIewHolder>() {
+class PostAdapter(val postList: ArrayList<Post>,val uid:String,val activity: FragmentActivity,
+                  val listener:(Post) -> Unit) : RecyclerView.Adapter<PostAdapter.PostItemVIewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostItemVIewHolder {
         val itemView:View = LayoutInflater.from(parent.context).inflate(R.layout.post_item_layout,parent,false)
         return PostItemVIewHolder(itemView)
@@ -71,8 +77,15 @@ class PostAdapter(val postList: ArrayList<Post>,val uid:String, val listener:(Po
                 }
             }
                 commentBT.setOnClickListener {
-
-
+                    val bundle = Bundle()
+                    bundle.putString("postKey",post.key)
+                    bundle.putString("volunteerKey",post.volunteerKey)
+                    bundle.putString("postBloodGroup",post.bloodGroup)
+                    bundle.putString("postCommentKey",post.commentsKey)
+                    val postDetail = PostDetail()
+                    postDetail.arguments = bundle
+                    activity.supportFragmentManager.beginTransaction().replace(R.id.frame_layout,postDetail)
+                            .addToBackStack(null).commit()
                 }
                 itemView.setOnClickListener {
                     listener(post)

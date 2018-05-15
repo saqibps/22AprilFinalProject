@@ -46,7 +46,7 @@ class HomeFragment : Fragment() {
         val uid = auth.currentUser!!.uid
         databaseReference = FirebaseDatabase.getInstance().reference.child("posts")
         postList = arrayListOf()
-        postAdapter = PostAdapter(postList,uid) {post ->
+        postAdapter = PostAdapter(postList,uid, activity!!) { post ->
             val bundle = Bundle()
             bundle.putString("postKey",post.key)
             bundle.putString("volunteerKey",post.volunteerKey)
@@ -54,7 +54,8 @@ class HomeFragment : Fragment() {
             bundle.putString("postCommentKey",post.commentsKey)
             val postDetail = PostDetail()
             postDetail.arguments = bundle
-            activity!!.supportFragmentManager.beginTransaction().replace(R.id.frame_layout,postDetail).commit()
+            activity!!.supportFragmentManager.beginTransaction().replace(R.id.frame_layout,postDetail)
+                    .addToBackStack(null).commit()
         }
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = postAdapter
@@ -66,7 +67,6 @@ class HomeFragment : Fragment() {
                     val post = snapshot.getValue(Post::class.java)
                     if (post != null) {
                         postList.add(post)
-                        Log.e("In Home Fragment", "Volunteer key : ${post.volunteerKey}")
                         postAdapter.notifyDataSetChanged()
                     }
 

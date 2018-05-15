@@ -40,7 +40,17 @@ class MyPostFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recycler_view_my_post_fragment)
         recyclerView.layoutManager = LinearLayoutManager(context)
         postList = arrayListOf()
-        myPostAdapter = MyPostAdapter(postList)
+        myPostAdapter = MyPostAdapter(postList) {post ->
+            val bundle = Bundle()
+            bundle.putString("postKey",post.key)
+            bundle.putString("volunteerKey",post.volunteerKey)
+            bundle.putString("postBloodGroup",post.bloodGroup)
+            bundle.putString("postCommentKey",post.commentsKey)
+            val myPostDetailFragment = MyPostDetailFragment()
+            myPostDetailFragment.arguments = bundle
+            activity!!.supportFragmentManager.beginTransaction().replace(R.id.frame_layout,myPostDetailFragment)
+                    .addToBackStack(null).commit()
+        }
         recyclerView.adapter = myPostAdapter
         val databaseRef = FirebaseDatabase.getInstance().reference.child("posts")
         databaseRef.addChildEventListener(object :ChildEventListener{

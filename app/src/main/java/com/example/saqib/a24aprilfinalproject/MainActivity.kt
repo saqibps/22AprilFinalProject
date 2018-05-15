@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         })
 
         supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_layout,HomeFragment(),"home_fragment")
+                .replace(R.id.frame_layout,HomeFragment(),"home_fragment").addToBackStack(null)
                 .commit()
 
         val toggle = ActionBarDrawerToggle(
@@ -100,13 +100,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.home -> {
+                drawer_layout.closeDrawer(GravityCompat.START)
                 supportFragmentManager.beginTransaction()
-                        .replace(R.id.frame_layout,HomeFragment())
+                        .replace(R.id.frame_layout,HomeFragment()).addToBackStack(null)
                         .commit()
             }
             R.id.my_request -> {
+                drawer_layout.closeDrawer(GravityCompat.START)
                 supportFragmentManager.beginTransaction()
-                        .replace(R.id.frame_layout,MyPostFragment())
+                        .replace(R.id.frame_layout,MyPostFragment()).addToBackStack(null)
                         .commit()
             }
             R.id.post_requirements -> {
