@@ -112,10 +112,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .commit()
             }
             R.id.post_requirements -> {
-
+                drawer_layout.closeDrawer(GravityCompat.START)
+                startActivity(Intent(this,AddPostActivity::class.java))
             }
             R.id.notifications -> {
-
+                drawer_layout.closeDrawer(GravityCompat.START)
+                supportFragmentManager.beginTransaction()
+                        .replace(R.id.frame_layout,NotificationsFragment()).addToBackStack(null)
+                        .commit()
             }
             R.id.action_settings -> {
 

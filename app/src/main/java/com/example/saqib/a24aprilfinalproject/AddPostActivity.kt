@@ -55,7 +55,7 @@ class AddPostActivity : AppCompatActivity() {
                         location,hospital,relation,null,null)
                 postdatabaseReference.child(key).setValue(post)
                 val notificationDesc = "$userName required $unitsReq units of $bloodGroup at $hospital."
-                val notification = Notification(key,notificationDesc)
+                val notification = Notification(key,userName,notificationDesc)
                 FirebaseDatabase.getInstance().reference.child("notifications").child(key).setValue(notification)
                 finish()
             }
