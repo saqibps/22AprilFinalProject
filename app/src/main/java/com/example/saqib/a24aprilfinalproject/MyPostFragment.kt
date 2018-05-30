@@ -1,6 +1,7 @@
 package com.example.saqib.a24aprilfinalproject
 
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -38,7 +39,9 @@ class MyPostFragment : Fragment() {
         uid = auth.currentUser!!.uid
 
         recyclerView = view.findViewById(R.id.recycler_view_my_post_fragment)
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        val linearLayoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.addItemDecoration(VerticalSpaceItemDecoration(48))
         postList = arrayListOf()
         myPostAdapter = MyPostAdapter(postList) {post ->
             val bundle = Bundle()
@@ -71,6 +74,12 @@ class MyPostFragment : Fragment() {
 
         return view
     }
+    inner class VerticalSpaceItemDecoration(private val verticalSpaceHeight: Int) : RecyclerView.ItemDecoration() {
 
+        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView,
+                                    state: RecyclerView.State) {
+            outRect.bottom = verticalSpaceHeight
+        }
+    }
 
 }

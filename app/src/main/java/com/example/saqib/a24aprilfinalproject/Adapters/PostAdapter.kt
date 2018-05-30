@@ -49,6 +49,22 @@ class PostAdapter(val postList: ArrayList<Post>,val uid:String,val activity: Fra
             volunteerTV.text = post.volunteerUptilNow.toString()
             instructionTV.text = post.additionalInstruction
             requirementTV.text = (post.unitsRequired - post.donationReceived).toString()
+            var isVolunteer:Boolean
+            FirebaseDatabase.getInstance().reference.child("volunteers").child(post.volunteerKey)
+                    .addChildEventListener(object :ChildEventListener{
+                        override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
+                        override fun onChildChanged(p0: DataSnapshot?, p1: String?) {}
+                        override fun onChildAdded(snapshot: DataSnapshot?, p1: String?) {
+                            val volunteer = snapshot!!.getValue(Volunteer::class.java)
+                            if (volunteer != null) {
+                                if (volunteer.uid == uid) {
+                                    volunteerBT.text = "Unvolunteer"
+                                }
+                            }
+                        }
+                        override fun onChildRemoved(p0: DataSnapshot?) {}
+                        override fun onCancelled(p0: DatabaseError?) {}
+                    })
 
             volunteerBT.setOnClickListener {
                 var volunteerKey = post.volunteerKey

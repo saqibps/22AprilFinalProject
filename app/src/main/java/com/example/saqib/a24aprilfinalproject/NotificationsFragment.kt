@@ -1,6 +1,7 @@
 package com.example.saqib.a24aprilfinalproject
 
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -44,7 +45,9 @@ class NotificationsFragment : Fragment() {
         databaseReference = FirebaseDatabase.getInstance().reference.child("notifications")
         notificationList = arrayListOf()
         notificationAdapter = NotificationAdapter(notificationList)
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        val linearLayoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.addItemDecoration(VerticalSpaceItemDecoration(48))
         recyclerView.adapter = notificationAdapter
 
 
@@ -69,5 +72,11 @@ class NotificationsFragment : Fragment() {
         return view
     }
 
+    inner class VerticalSpaceItemDecoration(private val verticalSpaceHeight: Int) : RecyclerView.ItemDecoration() {
 
+        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView,
+                                    state: RecyclerView.State) {
+            outRect.bottom = verticalSpaceHeight
+        }
+    }
 }

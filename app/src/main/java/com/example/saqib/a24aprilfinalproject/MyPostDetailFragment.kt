@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import com.example.saqib.a24aprilfinalproject.Adapters.CommentAdapter
 import com.example.saqib.a24aprilfinalproject.Adapters.MyPostVolunteerAdapter
 import com.example.saqib.a24aprilfinalproject.Adapters.VolunteerAdapter
@@ -77,6 +78,16 @@ class MyPostDetailFragment : Fragment() {
                 }
             }
         })
+        val units_req_tv_my_post_detail_fragment:TextView = view.findViewById(R.id.units_req_tv_my_post_detail_fragment)
+        val donation_received_tv_my_post_detail_fragment:TextView = view.findViewById(R.id.donation_received_tv_my_post_detail_fragment)
+        val still_required_tv_my_post_detail_fragment:TextView = view.findViewById(R.id.still_required_tv_my_post_detail_fragment)
+        val blood_group_tv_my_post_detail_fragment:TextView = view.findViewById(R.id.blood_group_tv_my_post_detail_fragment)
+        val location_tv_my_post_detail_fragment:TextView = view.findViewById(R.id.location_tv_my_post_detail_fragment)
+        val hospital_tv_my_post_detail_fragment:TextView = view.findViewById(R.id.hospital_tv_my_post_detail_fragment)
+        val urgency_tv_my_post_detail_fragment:TextView = view.findViewById(R.id.urgency_tv_my_post_detail_fragment)
+        val relation_tv_my_post_detail_fragment:TextView = view.findViewById(R.id.relation_tv_my_post_detail_fragment)
+        val contact_tv_my_post_detail_fragment:TextView = view.findViewById(R.id.contact_tv_my_post_detail_fragment)
+        val instruction_tv_my_post_detail_fragment:TextView = view.findViewById(R.id.instruction_tv_my_post_detail_fragment)
 
         postDatabaseReference = FirebaseDatabase.getInstance().reference.child("posts").child(postKey)
         postDatabaseReference.addValueEventListener(object : ValueEventListener {
