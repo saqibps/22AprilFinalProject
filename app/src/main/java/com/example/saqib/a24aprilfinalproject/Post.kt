@@ -6,6 +6,7 @@ data class Post(val key:String,
                 var unitsRequired:Int,
                 var donationReceived:Int,
                 var volunteerUptilNow:Int,
+                val status:String,
                 val bloodGroup:String,
                 val urgency:String,
                 val contact:String,
@@ -15,6 +16,6 @@ data class Post(val key:String,
                 val relationWithPatient:String,
                 var commentsKey: String?,
                 var volunteerKey: String?) {
-    constructor():this("","","",0,0,0,"","","",
+    constructor():this("","","",0,0,0,"","","","",
             "","","","","","")
 }

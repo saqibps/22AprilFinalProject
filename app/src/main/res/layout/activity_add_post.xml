@@ -213,9 +213,19 @@
         <EditText
             android:id="@+id/additional_instruction_add_new_et"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAllCaps="false"
-            android:lines="4"/>
+            android:layout_height="150dp"
+            android:padding="10dp"
+            android:maxLines="4"
+            android:inputType="text|textMultiLine"
+            android:gravity="top"
+            android:background="@drawable/text_input_border"/>
+
+        <!--<EditText-->
+            <!--android:id="@+id/additional_instruction_add_new_et"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textAllCaps="false"-->
+            <!--android:lines="4"/>-->
 
     </LinearLayout>
 

@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import com.example.saqib.a24aprilfinalproject.Adapters.CommentAdapter
@@ -78,6 +79,7 @@ class MyPostDetailFragment : Fragment() {
                 }
             }
         })
+        val status_chechkbox_my_post_detail:CheckBox = view.findViewById(R.id.status_chechkbox_my_post_detail)
         val units_req_tv_my_post_detail_fragment:TextView = view.findViewById(R.id.units_req_tv_my_post_detail_fragment)
         val donation_received_tv_my_post_detail_fragment:TextView = view.findViewById(R.id.donation_received_tv_my_post_detail_fragment)
         val still_required_tv_my_post_detail_fragment:TextView = view.findViewById(R.id.still_required_tv_my_post_detail_fragment)
@@ -89,11 +91,23 @@ class MyPostDetailFragment : Fragment() {
         val contact_tv_my_post_detail_fragment:TextView = view.findViewById(R.id.contact_tv_my_post_detail_fragment)
         val instruction_tv_my_post_detail_fragment:TextView = view.findViewById(R.id.instruction_tv_my_post_detail_fragment)
 
+
+
         postDatabaseReference = FirebaseDatabase.getInstance().reference.child("posts").child(postKey)
+        status_chechkbox_my_post_detail.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                postDatabaseReference.child("status").setValue("fulfilled")
+            } else{
+                postDatabaseReference.child("status").setValue("not fulfilled")
+            }
+        }
         postDatabaseReference.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {}
             override fun onDataChange(snapshot: DataSnapshot?) {
                 post = snapshot!!.getValue(Post::class.java)!!
+                if (post.status.equals("fulfilled")) {
+                    status_chechkbox_my_post_detail.isChecked = true
+                }
                 units_req_tv_my_post_detail_fragment.text = post.unitsRequired.toString()
                 donation_received_tv_my_post_detail_fragment.text = post.donationReceived.toString()
                 still_required_tv_my_post_detail_fragment.text = (post.unitsRequired - post.donationReceived).toString()

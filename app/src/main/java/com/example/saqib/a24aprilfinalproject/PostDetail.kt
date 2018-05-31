@@ -2,6 +2,7 @@ package com.example.saqib.a24aprilfinalproject
 
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -12,10 +13,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import android.widget.Toast.*
 import com.example.saqib.a24aprilfinalproject.Adapters.CommentAdapter
 import com.example.saqib.a24aprilfinalproject.Adapters.VolunteerAdapter
@@ -88,7 +86,9 @@ class PostDetail : Fragment() {
                 comment_bt.isEnabled = comment_et.text.toString().isNotEmpty()
             }
         })
+
         val name_tv_post_detail_fragment:TextView = view.findViewById(R.id.name_tv_post_detail_fragment)
+        val star_button:ImageButton = view.findViewById(R.id.star_button_post_detail_fragment)
         val units_req_tv_post_detail_fragment:TextView = view.findViewById(R.id.units_req_tv_post_detail_fragment)
         val donation_received_tv_post_detail_fragment:TextView = view.findViewById(R.id.donation_received_tv_post_detail_fragment)
         val still_required_tv_post_detail_fragment:TextView = view.findViewById(R.id.still_required_tv_post_detail_fragment)
@@ -108,6 +108,9 @@ class PostDetail : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot?) {
                 post = snapshot!!.getValue(Post::class.java)!!
                 name_tv_post_detail_fragment.text = post!!.userName
+                if (post.status.equals("fulfilled")) {
+                    star_button.setImageResource(android.R.drawable.btn_star_big_on)
+                }
                 units_req_tv_post_detail_fragment.text = post.unitsRequired.toString()
                 donation_received_tv_post_detail_fragment.text = post.donationReceived.toString()
                 still_required_tv_post_detail_fragment.text = (post.unitsRequired - post.donationReceived).toString()

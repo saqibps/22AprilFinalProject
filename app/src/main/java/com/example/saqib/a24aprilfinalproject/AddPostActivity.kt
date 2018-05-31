@@ -51,7 +51,7 @@ class AddPostActivity : AppCompatActivity() {
                 val location = "$city,$state,$country"
 
                 val key:String = postdatabaseReference.push().key
-                val post = Post(key,uid,userName,unitsReq,0,0,bloodGroup,urgency,contact,additionInstruction,
+                val post = Post(key,uid,userName,unitsReq,0,0,"not fulfilled",bloodGroup,urgency,contact,additionInstruction,
                         location,hospital,relation,null,null)
                 postdatabaseReference.child(key).setValue(post)
                 val notificationDesc = "$userName required $unitsReq units of $bloodGroup at $hospital."

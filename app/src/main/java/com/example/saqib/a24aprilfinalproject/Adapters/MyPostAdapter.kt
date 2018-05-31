@@ -26,7 +26,7 @@ class MyPostAdapter(val postList:ArrayList<Post>,val listener: (Post) -> Unit): 
         fun bindView(post: Post) {
             val desc = "Required ${post.unitsRequired} units of ${post.bloodGroup} at ${post.hospital}"
             descTV.text = desc
-            statusTV.text = if ((post.unitsRequired-post.donationReceived) == 0) {"Completed"} else "Not fullfilled"
+            statusTV.text = post.status.toString()
             itemView.setOnClickListener {
                 listener(post)
             }
