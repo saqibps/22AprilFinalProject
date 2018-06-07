@@ -35,7 +35,7 @@ private const val ARG_PARAM2 = "param2"
 class PostDetail : Fragment() {
 
     lateinit var postDatabaseReference: DatabaseReference
-    lateinit var commentDatabaseReference:DatabaseReference
+    var commentDatabaseReference:DatabaseReference? = null
     lateinit var volunteerDatabaseReference:DatabaseReference
     lateinit var volunteerList:ArrayList<Volunteer>
     lateinit var commentList:ArrayList<Comment>
@@ -48,6 +48,7 @@ class PostDetail : Fragment() {
     lateinit var postKey:String
     lateinit var post: Post
     lateinit var userName:String
+    lateinit var commentChildEventListener: ChildEventListener
     var postBloodGroup:String = ""
     var commentKey:String = ""
     var volunteerKey:String = ""
@@ -121,11 +122,6 @@ class PostDetail : Fragment() {
                 relation_tv_post_detail_fragment.text = post.relationWithPatient
                 contact_tv_post_detail_fragment.text = post.contact
                 instruction_tv_post_detail_fragment.text = post.additionalInstruction
-                // Since this listener callbacks run after child listener of comments database and volunteer database,
-                        // SO we are not saving commentkey and volunteerkey value here.
-                        // else we are passing these values from previous fragment.
-//                volunteerKey = post.volunteerKey!!
-//                commentKey = post.commentsKey!!
             }
         })
 
@@ -153,26 +149,45 @@ class PostDetail : Fragment() {
             commentRecyclerView = view.findViewById(R.id.comments_recycler_view_post_detail)
             commentRecyclerView.layoutManager = LinearLayoutManager(context)
             commentRecyclerView.adapter = commentAdapter
-            commentDatabaseReference = FirebaseDatabase.getInstance().reference.child("comments").child(commentKey)
-            commentDatabaseReference.addChildEventListener(object :ChildEventListener{
-                override fun onCancelled(p0: DatabaseError?) {}
-                override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
-                override fun onChildChanged(p0: DataSnapshot?, p1: String?) {}
-                override fun onChildRemoved(p0: DataSnapshot?) {}
-                override fun onChildAdded(snapshot: DataSnapshot, p1: String?) {
-                    Log.e("In post detail","On child added is called")
-                    val comment = snapshot.getValue(Comment::class.java)
-                    if (comment != null) {
-                        commentList.add(comment)
-                        commentAdapter.notifyDataSetChanged()
-                    }
+        commentChildEventListener = object: ChildEventListener{
+            override fun onCancelled(p0: DatabaseError?) {}
+            override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
+            override fun onChildChanged(p0: DataSnapshot?, p1: String?) {}
+            override fun onChildRemoved(p0: DataSnapshot?) {}
+            override fun onChildAdded(snapshot: DataSnapshot?, p1: String?) {
+                Log.e("In post detail","On child added is called")
+                val comment = snapshot!!.getValue(Comment::class.java)
+                if (comment != null) {
+                    commentList.add(comment)
+                    commentAdapter.notifyDataSetChanged()
                 }
-
-            })
+            }
+        }
+        if (!commentKey.equals("")) {
+            commentDatabaseReference = FirebaseDatabase.getInstance().reference.child("comments").child(commentKey)
+            commentDatabaseReference!!.addChildEventListener(commentChildEventListener)
+        }
+//            commentDatabaseReference.addChildEventListener(object :ChildEventListener{
+//                override fun onCancelled(p0: DatabaseError?) {}
+//                override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
+//                override fun onChildChanged(p0: DataSnapshot?, p1: String?) {}
+//                override fun onChildRemoved(p0: DataSnapshot?) {}
+//                override fun onChildAdded(snapshot: DataSnapshot, p1: String?) {
+//                    Log.e("In post detail","On child added is called")
+//                    val comment = snapshot.getValue(Comment::class.java)
+//                    if (comment != null) {
+//                        commentList.add(comment)
+//                        commentAdapter.notifyDataSetChanged()
+//                    }
+//                }
+//
+//            })
         comment_bt.setOnClickListener {
             val commentDesc = comment_et.text.toString()
             if (commentKey.equals("")) {
                 commentKey = FirebaseDatabase.getInstance().reference.child("comments").push().key
+                commentDatabaseReference = FirebaseDatabase.getInstance().reference.child("comments").child(commentKey)
+                commentDatabaseReference!!.addChildEventListener(commentChildEventListener)
                 FirebaseDatabase.getInstance().reference.child("posts").child(postKey).child("commentsKey").setValue(commentKey)
                 post.commentsKey = commentKey
             }

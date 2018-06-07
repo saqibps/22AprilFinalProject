@@ -22,7 +22,10 @@
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".AddPostActivity"></activity>
+        <activity
+            android:name=".AddPostActivity"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
     </application>
 
 </manifest>

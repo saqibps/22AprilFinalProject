@@ -49,13 +49,14 @@ class AddPostActivity : AppCompatActivity() {
                 val additionInstruction: String = additional_instruction_add_new_et.text.toString()
                 val userName = "${user.firstName} ${user.lastName}"
                 val location = "$city,$state,$country"
+                val timeStamp = (-1 * System.currentTimeMillis())
 
                 val key:String = postdatabaseReference.push().key
                 val post = Post(key,uid,userName,unitsReq,0,0,"not fulfilled",bloodGroup,urgency,contact,additionInstruction,
-                        location,hospital,relation,null,null)
+                        location,hospital,relation,null,null,timeStamp)
                 postdatabaseReference.child(key).setValue(post)
                 val notificationDesc = "$userName required $unitsReq units of $bloodGroup at $hospital."
-                val notification = Notification(key,userName,notificationDesc)
+                val notification = Notification(key,userName,notificationDesc,timeStamp)
                 FirebaseDatabase.getInstance().reference.child("notifications").child(key).setValue(notification)
                 finish()
             }

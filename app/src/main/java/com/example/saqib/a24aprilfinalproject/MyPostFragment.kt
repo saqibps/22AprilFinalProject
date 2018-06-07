@@ -56,7 +56,7 @@ class MyPostFragment : Fragment() {
         }
         recyclerView.adapter = myPostAdapter
         val databaseRef = FirebaseDatabase.getInstance().reference.child("posts")
-        databaseRef.addChildEventListener(object :ChildEventListener{
+        databaseRef.orderByChild("timeStamp").addChildEventListener(object :ChildEventListener{
             override fun onCancelled(p0: DatabaseError?) {}
             override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
             override fun onChildChanged(p0: DataSnapshot?, p1: String?) {}

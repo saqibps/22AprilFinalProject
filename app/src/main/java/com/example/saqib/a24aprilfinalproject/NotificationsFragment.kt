@@ -51,7 +51,7 @@ class NotificationsFragment : Fragment() {
         recyclerView.adapter = notificationAdapter
 
 
-        databaseReference.addChildEventListener(object : ChildEventListener {
+        databaseReference.orderByChild("timeStamp").addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, p1: String?) {
                 if (snapshot != null) {
                     val notification = snapshot.getValue(Notification::class.java)

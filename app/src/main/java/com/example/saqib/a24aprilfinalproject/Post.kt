@@ -15,7 +15,8 @@ data class Post(val key:String,
                 val hospital:String,
                 val relationWithPatient:String,
                 var commentsKey: String?,
-                var volunteerKey: String?) {
+                var volunteerKey: String?,
+                val timeStamp:Long) {
     constructor():this("","","",0,0,0,"","","","",
-            "","","","","","")
+            "","","","","","",0)
 }

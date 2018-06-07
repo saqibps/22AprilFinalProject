@@ -315,6 +315,7 @@
                 android:id="@+id/comment_et_post_detail_fragment"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:paddingLeft="5dp"
                 android:background="@drawable/rectangular_edit_text"
                 android:layout_weight="3"/>
 
@@ -329,7 +330,6 @@
                 android:textColor="@android:color/black"/>
 
         </LinearLayout>
-
 
     </LinearLayout>
 

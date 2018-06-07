@@ -64,7 +64,7 @@ class HomeFragment : Fragment() {
         recyclerView.adapter = postAdapter
 
 
-        databaseReference.addChildEventListener(object : ChildEventListener{
+        databaseReference.orderByChild("timeStamp").addChildEventListener(object : ChildEventListener{
             override fun onChildAdded(snapshot: DataSnapshot, p1: String?) {
                 if (snapshot != null) {
                     val post = snapshot.getValue(Post::class.java)
